@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    posko-browser (0.1.0)
+    posko-browser (0.0.1)
       rails (~> 5.1.6)
 
 GEM
