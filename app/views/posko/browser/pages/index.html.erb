@@ -1,0 +1,85 @@
+<script>
+  // var a = function() {
+    var idb = window.indexedDB || window.mozIndexedDB || window.webkitIndexDB || window.msIndexDB
+
+    let request = idb.open('poskoDB', 1), db, tx, store, index;
+
+    console.log(request)
+    request.onerror = function(e) {
+      console.log('error')
+    }
+    request.onsuccess = function(e) {
+      db = request.result
+      tx = db.transaction('variants', 'readwrite')
+      store = tx.objectStore('variants')
+       var items = [
+            {
+              id: 1,
+              name: 'Laptop',
+            },
+            {
+              id: 2,
+              name: 'Phone'
+            }
+          ]
+
+      // store.put(items[0])
+      // store.put(items[1])
+
+      items2 =  store.getAll();
+      console.log(items2)
+      items2.onsuccess = function() {
+        items2.result.forEach(function(item) {
+          console.log(item)
+        })
+      }
+
+      tx.oncomplete = function() {
+        db.close();
+      }
+    }
+
+    request.onupgradeneeded = function(e) {
+      let db = request.result,
+        store = db.createObjectStore('variants', {keyPath: 'id'}),
+        index = store.createIndex('id', 'id', {unique: true})
+    }
+  // }
+  // (function(){
+  //   a();
+  // });
+  //   var dbPromise = window.indexedDB.open('posko', 1, function(upgradeDb) {
+  //     console.log('making a new object store');
+  //     if (!upgradeDb.objectStoreNames.contains('variants')) {
+  //       var variantOS = upgradeDb.createObjectStore('variants', {keyPath: 'id'});
+  //       variantOS.createIndex('id', 'id', {unique: true});
+  //     }
+  //   });
+  //   dbPromise.then(function(db){
+  //     var tx = db.transaction('variants', 'readwrite')
+  //     var store = tx.objectStore('variants')
+  //     var items = [
+  //       {
+  //         id: 1,
+  //         name: 'Laptop',
+  //       },
+  //       {
+  //         id: 2,
+  //         name: 'Phone'
+  //       }
+  //     ]
+  //
+  //     store.add(items[0])
+  //     store.add(items[1])
+  //     return tx.complete;
+  //   }).then(function(db) {
+  //     var tx = db.transaction('variants', 'readonly');
+  //     var store = tx.objectStore('variants');
+  //     items =  store.getAll();
+  //     forEach(items, function(){
+  //       console.log(item)
+  //     })
+  //   });
+  // };
+  // a();
+</script>
